@@ -1,0 +1,33 @@
+﻿@model IEnumerable<SweetCreativity1.Core.Entities.Favorite>
+
+@{
+    ViewData["Title"] = "Мої вподобання";
+}
+
+<h1>Favorites</h1>
+
+@if (Model.Any())
+{
+    @foreach (var favorite in Model)
+    {
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 m-4" style="margin-left:40px;">
+            <div class="card" style="width: 18rem;">
+                <img src="@favorite.Listing.CoverPath" class="card-img-top" alt="img/NoCover.jpg">
+                <div class="card-body">
+                    <h5 class="card-title">@favorite.Listing.Title</h5>
+                    <p class="card-text">@favorite.Listing.Description</p>
+                    <a href="/listing/details/@favorite.Listing.Id" class="btn btn-outline-primary">Детальніше</a>
+
+                    <!-- Form for removing favorite -->
+                    <form method="post" asp-action="Delete" asp-route-id="@favorite.Id">
+                        <button type="submit" class="btn btn-danger mt-2">Видалити</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p>No favorites found.</p>
+}

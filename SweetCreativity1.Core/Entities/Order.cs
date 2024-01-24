@@ -1,0 +1,42 @@
+﻿using Microsoft.AspNetCore.Http;
+using SweetCreativity1.Core.Entities;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SweetCreativity1.Core.Entities
+{
+    public class Order
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public string NameOrder { get; set; }
+
+        public int Quantity { get; set; }
+        public decimal PriceOne { get; set; }
+        public decimal TotalPrice { get; set; }
+        public DateTime CreatedAtOrder { get; set; } = DateTime.Now;
+        public int CustomerNumber { get; set; }
+
+        //public string? CoverPath { get; set; } = "\\img\\user\\no_cover.jpg";
+        //[NotMapped]
+        //public IFormFile? CoverFile { get; set; }
+        public string? ListingPhotoPath { get; set; }
+        public decimal? Discount { get; set; }//double
+
+        public virtual User? User { get; set; }
+        public string? UserId { get; set; }
+        public virtual Listing? Listing { get; set; }
+        public int? ListingId { get; set; }
+
+        [ForeignKey("StatusId")]
+
+        public virtual Status? Status { get; set; }
+        public int? StatusId { get; set; }//?
+    }
+}

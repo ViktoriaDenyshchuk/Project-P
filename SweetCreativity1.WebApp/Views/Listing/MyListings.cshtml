@@ -1,0 +1,36 @@
+﻿@model IEnumerable<SweetCreativity1.Core.Entities.Listing>
+
+@{
+    ViewData["Title"] = "Мої оголошення";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Нове оголошення </a>
+</p>
+<div class="page-heading" style="padding-left: 300px;">
+    <h3>@ViewData["Title"]</h3>
+</div>
+
+<div class="page-content">
+    <div class="row">
+        @foreach (var listing in Model)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 m-4" style="margin-left:40px;">
+                <div class="card" style="width: 18rem;">
+                    <img src="@listing.CoverPath" class="card-img-top" alt="img/NoCover.jpg">
+                    <div class="card-body">
+                        <h5 class="card-title">@listing.Title</h5>
+                        <p class="card-text">@listing.Description</p>
+                        <a href="/listing/details/@listing.Id" class="btn btn-outline-primary">Детальніше</a>
+
+                        <!-- Add the Delete button -->
+                        <form method="post" asp-controller="Listing" asp-action="Delete">
+                            <input type="hidden" name="id" value="@listing.Id" />
+                            <button type="submit" class="btn btn-outline-danger mt-2">Видалити</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

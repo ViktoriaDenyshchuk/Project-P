@@ -1,0 +1,125 @@
+﻿@using SweetCreativity1.Core.Entities
+@model Order
+
+<h1>Створення нового замовлення</h1>
+
+<div class="row">
+    <div class="col-md-4">
+
+        <form asp-action="Create" enctype="multipart/form-data">
+            @Html.ValidationSummary()
+
+            <div class="form-group mt-3">
+                <label asp-for="ListingPhotoPath"></label>
+                <img src="@Model.ListingPhotoPath" alt="Фото оголошення" />
+                <input asp-for="ListingPhotoPath" type="hidden" />
+            </div>
+
+            <div class="mb-3">
+                @Html.DisplayNameFor(model => model.NameOrder)
+                <input asp-for="NameOrder" class="form-control" />
+                <span asp-validation-for="NameOrder" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                @Html.DisplayNameFor(model => model.ListingId)
+                <input asp-for="ListingId" class="form-control" />
+                <span asp-validation-for="ListingId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                @Html.DisplayNameFor(model => model.Quantity)
+                @Html.TextAreaFor(model => model.Quantity, new { @class = "form-control", id = "Quantity" })
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+                <div class="invalid-feedback" id="QuantityWarning"></div>
+            </div>
+
+            <div class="mb-3">
+                @Html.DisplayNameFor(model => model.CustomerNumber)
+                @Html.TextAreaFor(model => model.CustomerNumber, new { @class = "form-control" })
+                <span asp-validation-for="CustomerNumber" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                @Html.DisplayNameFor(model => model.PriceOne)
+                @Html.TextBoxFor(model => model.PriceOne, new { @class = "form-control", @readonly = "readonly", id = "PriceOne" })
+                <span asp-validation-for="PriceOne" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                @* Display the TotalPrice value *@
+                <p>Загальна ціна: <span id="TotalPriceDisplay">0.00</span></p>
+
+                @* Use a hidden field to store the TotalPrice value *@
+                <input asp-for="TotalPrice" type="hidden" id="TotalPriceHidden" />
+            </div>
+
+
+            <div class="mb-3">
+                Ціна без знижки: <span id="OriginalPriceDisplay">0.00</span>
+            </div>
+
+            <div class="mb-3">
+                Знижка: <span id="DiscountDisplay">0%</span>
+            </div>
+
+
+            <br />
+            <button type="submit" class="btn btn-success">Зберегти</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var quantity = 0;
+            var quantityLimit = 15; // Встановіть ліміт кількості
+
+            $('#Quantity').on('input', function () {
+                var inputVal = $(this).val();
+                quantity = isNaN(inputVal) ? 0 : Math.max(0, parseInt(inputVal));
+
+                if (quantity > quantityLimit) {
+                    $('#QuantityWarning').text('Ліміт кількості перевищено!');
+                    $('#Quantity').addClass('is-invalid');
+                } else {
+                    $('#QuantityWarning').text('');
+                    $('#Quantity').removeClass('is-invalid');
+                }
+
+                updatePrice();
+            });
+
+            $('form').submit(function () {
+                if (quantity > quantityLimit) {
+                    return false;
+                }
+
+                // Додаткові дії, якщо ліміт не перевищено
+
+                return true;
+            });
+
+            function updatePrice() {
+                var priceOne = parseInt($('#PriceOne').val());
+                var originalPrice = quantity * priceOne;
+                var discount = Math.min(Math.floor(quantity / 2) * 5, 35);
+                var discountedPrice = originalPrice - (originalPrice * (discount / 100));
+
+                $('#OriginalPriceDisplay').text(isNaN(originalPrice) ? '0.00' : originalPrice.toFixed(2));
+                $('#DiscountDisplay').text(isNaN(discount) ? '0%' : discount + "%");
+
+                // Умова для уникнення NaN у відображенні загальної ціни
+                $('#TotalPriceDisplay').text(isNaN(discountedPrice) || !isFinite(discountedPrice) ? '0.00' : discountedPrice.toFixed(2));
+
+                $('#TotalPriceHidden').val(isNaN(discountedPrice) ? 0 : discountedPrice);
+            }
+
+
+        });
+
+    </script>
+}
+

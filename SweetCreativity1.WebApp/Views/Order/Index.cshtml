@@ -1,0 +1,25 @@
+﻿@model IEnumerable<SweetCreativity1.Core.Entities.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>Замовлення</h1>
+
+<div class="row">
+    @foreach (var order in Model)
+    {
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 m-4">
+            <div class="card" style="width: 18rem;">
+               
+                <div class="card-body">
+                    <h5 class="card-title">@order.NameOrder</h5>
+                    <p class="card-text">@order.Quantity</p>
+                    <p class="card-text">Статус: @(order.Status != null ? order.Status.StatusName : "Немає статусу")</p>
+                    <a href="/order/details/@order.Id" class="btn btn-outline-primary">Детальніше</a>
+                    @*<a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id" asp-route-type="Order">Детальніше</a>
+*@
+                </div>
+            </div>
+        </div>
+    }
+</div>

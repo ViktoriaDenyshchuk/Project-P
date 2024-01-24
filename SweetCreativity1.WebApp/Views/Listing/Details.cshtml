@@ -1,0 +1,301 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+
+@using SweetCreativity1.Core.Entities;
+@using System.Security.Claims;
+
+@model Listing
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h1>Оголошення</h1>
+<div class="row col-4">
+    <img src="@Model.CoverPath" class="card-img-top" alt="@Model.Title">
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-2">Назва:</div>
+    <div class="col-10"><strong>@Model.Title</strong></div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-2">Категорія:</div>
+    <div class="col-4">
+        @if (Model.Category != null)
+        {
+            @*@Model.Category.NameCategory*@
+            @ViewBag.OwnerCategory
+        }
+        else
+        {
+            <span>Категорія не визначена</span>
+        }
+    </div>
+</div>
+<hr />
+
+
+<div class="row">
+    <div class="col-2">Опис:</div>
+    <div class="col-4">@Model.Description</div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-2">Склад продукту:</div>
+    <div class="col-4">@Model.Product</div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-2">Дата створення оголошення:</div>
+    <div class="col-4">@Model.CreatedAtListing</div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-2">Розташування:</div>
+    <div class="col-4">@Model.Location</div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-2">Ціна:</div>
+    <div class="col-4">@Model.Price</div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-2">Вага:</div>
+    <div class="col-4">@Model.Weight</div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-2">Виробник:</div>
+    <div class="col-4">@ViewBag.OwnerName</div>
+    <a asp-controller="User" asp-action="Details" asp-route-id="@Model.UserId">Деталі виробника</a>
+</div>
+<hr />
+
+@*<div class="row">
+        <div class="col-1">
+            <a href="@Url.Action("Edit", "Listing", new { id = Model.Id })" class="btn btn-primary">Редагувати</a>
+        </div>
+</div>*@
+<!-- Код до розділу з кнопкою редагування -->
+<!-- Debugging information -->
+@*<div>
+    Authenticated User ID: @(User.Identity.IsAuthenticated ? UserManager.GetUserId(User) : "Not authenticated")
+</div>
+<div>
+    Seller (Model User) ID: @Model.UserId
+</div>
+<div>
+    Condition Result: @(User.Identity.IsAuthenticated && UserManager.GetUserId(User) == Model.UserId)
+</div>*@
+<!-- Check if the authenticated user is the owner of the listing -->
+<div class="row">
+    <div class="col-1">
+        @if (User.Identity.IsAuthenticated && (UserManager.GetUserId(User) == Model.UserId || User.IsInRole("Admin")))
+        {
+            <!-- Show the edit button if the authenticated user is the owner or an administrator -->
+            <a href="@Url.Action("Edit", "Listing", new { id = Model.Id })" class="btn btn-primary">Редагувати</a>
+        }
+    </div>
+</div>
+
+
+@*<div class="row">
+        <div class="col-1" style="padding-top:10px;">
+            <form method="post" asp-action="Delete" asp-route-id="@Model.Id">
+                <button type="submit" class="btn btn-danger">Видалити</button>
+            </form>
+        </div>
+    </div>
+<hr />*@
+
+<!-- Check if the authenticated user is the owner of the listing or an admin -->
+<div class="row">
+    <div class="col-1" style="padding-top: 10px;">
+        @if (User.Identity.IsAuthenticated)
+        {
+            var authenticatedUserId = UserManager.GetUserId(User);
+            if (authenticatedUserId == Model.UserId || User.IsInRole("Admin"))
+            {
+                <!-- Show the delete button if the authenticated user is the owner or an admin -->
+                <form method="post" asp-action="Delete" asp-route-id="@Model.Id">
+                    <button type="submit" class="btn btn-danger">Видалити</button>
+                </form>
+                <hr />
+            }
+        }
+    </div>
+</div>
+
+@if (!User.IsInRole("Admin") && !User.IsInRole("Seller"))
+    {
+<div class="row">
+    <div class="col-2">
+        <a href="@Url.Action("Create", "Order", new { listingId = Model.Id, nameOrder = Model.Title, price = Model.Price })" class="btn btn-success"
+           style="width: 200px; margin-top: 10px; margin-bottom: 10px;">Зробити замовлення</a>
+    </div>
+</div>
+<hr />
+}
+
+@*@if (User.Identity.IsAuthenticated)
+{
+    <form method="post" action="@Url.Action("AddToFavorites", "Favorites")">
+        <input type="hidden" name="listingId" value="@Model.Id" />
+        <button type="submit" class="btn btn-primary">Вподобати</button>
+    </form>
+
+}*@
+@if (User.IsInRole("Client"))
+{
+    <form method="post" asp-controller="Favorite" asp-action="AddToFavorites">
+        <input type="hidden" name="listingId" value="@Model.Id" />
+        <button type="submit">Вподобати</button>
+    </form>
+    <hr />
+}
+@*Додавання коментаря та відгуку*@
+@if (User.Identity.IsAuthenticated)
+{
+    var authenticatedUserId = UserManager.GetUserId(User);
+    if (authenticatedUserId != Model.UserId && !User.IsInRole("Admin"))
+    {
+<div>
+
+   @* <a href="javascript:void(0);" class="btn btn-primary" onclick="openRatingModal()">
+        Залишити рейтинг/відгук
+    </a>*@
+    <h4>Залишити рейтинг/відгук</h4>
+    <div class="modal-body">
+        <form method="post" asp-action="AddRating" asp-controller="Listing">
+            <input type="hidden" name="listingId" value="@Model.Id" />
+            <div class="form-group">
+                <label for="ratingValue">Оцінка:</label>
+                <select name="ratingPoint" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <div class="row">
+                <div class="fixed-right p-3 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Зберегти рейтинг</button>
+                </div>
+
+            </div>
+
+        </form>
+        <form asp-action="AddResponse" asp-controller="Listing">
+            <input type="hidden" name="listingId" value="@Model.Id" />
+            <div class="form-group">
+                <label for="textResponse">Текст відгуку:</label>
+                <textarea name="textResponse" class="form-control"></textarea>
+            </div>
+            <div class="row">
+                <div class="fixed-right p-3 d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Зберегти відгук</button>
+            </div>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+    }
+}
+
+@*<div class="row">
+    <div class="col-2"><h5>Середній рейтинг:</h5></div>
+    <div class="col-4">
+        @ViewBag.AverageRating
+    </div>
+</div>
+<br />*@
+<div class="row">
+    <div class="col-2"><h5>Середній рейтинг:</h5></div>
+    <div class="col-4">
+        @if (ViewBag.AverageRating != null && (double)ViewBag.AverageRating != 0)
+        {
+            @ViewBag.AverageRating
+        }
+        else
+        {
+            <span>Поки немає оцінок</span>
+        }
+    </div>
+</div>
+<br />
+
+
+<h5>Відгуки користувачів: </h5>
+@if (Model.Responses != null && Model.Responses.Count > 0)
+{
+    <ul>
+
+        @foreach (var response in Model.Responses)
+        {
+            <li>@response.TextResponse</li>
+        }
+    </ul>
+}
+else
+{
+    <p>Наразі немає жодних відгуків.</p>
+}
+
+
+@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js"></script>
+<script src="~/js/rating.js"></script>
+
+
+
+<div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ratingModalLabel">Додати рейтинг/відгук</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-action="AddRating" asp-controller="Listing">
+                    <input type="hidden" name="listingId" value="@Model.Id" />
+                    <div class="form-group">
+                        <label for="ratingValue">Оцінка:</label>
+                        <select name="ratingPoint" class="form-control">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Зберегти рейтинг</button>
+                </form>
+                <form asp-action="AddResponse" asp-controller="Listing">
+                    <input type="hidden" name="listingId" value="@Model.Id" />
+                    <div class="form-group">
+                        <label for="textResponse">Текст відгуку:</label>
+                        <textarea name="textResponse" class="form-control"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Зберегти відгук</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+*@

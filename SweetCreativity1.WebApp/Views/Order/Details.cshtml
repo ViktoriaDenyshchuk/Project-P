@@ -1,0 +1,184 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+
+@using Microsoft.AspNetCore.Identity;
+@using SweetCreativity1.Core.Entities;
+
+
+@model Order
+
+@{
+    ViewData["Title"] = Model.NameOrder;
+}
+
+<h1>Замовлення</h1>
+@*<div class="row col-4">
+    <img src="@Model.ListingPhotoPath" class="card-img-top" alt="@Model.NameOrder">
+</div>*@
+<hr />
+
+<div class="row">
+    <div class="col-2">Назва замовлення:</div>
+    <div class="col-10"><strong>@Model.NameOrder</strong></div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-2">Кількість:</div>
+    <div class="col-4">@Model.Quantity</div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-2">Загальна сума замовлення:</div>
+    <div class="col-4">@Model.TotalPrice</div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-2">Дата створення замовлення:</div>
+    <div class="col-4">@Model.CreatedAtOrder</div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-2">Ім'я та прізвище замовника:</div>
+    <div class="col-4">
+        @if (User.Identity.IsAuthenticated)
+        {
+            var userId = Model.UserId; // Замініть це на відповідний спосіб отримання ідентифікатора користувача
+            var user = await UserManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                <span>@user.FullName</span>
+            }
+        }
+    </div>
+</div>
+<hr />
+
+
+<div class="row">
+    <div class="col-2">Номер телефону замовника:</div>
+    <div class="col-4">@Model.CustomerNumber</div>
+</div>
+<hr />
+
+@if (!User.IsInRole("Admin"))
+{
+    @if (User.IsInRole("Seller"))
+    {
+        <form method="post" asp-action="UpdateStatus" asp-route-id="@Model.Id">
+            <div class="form-group">
+                <label for="Status">Статус:</label>
+                <select class="form-control" id="Status" asp-for="StatusId" asp-items="ViewBag.StatusList" style="max-height: 150px; overflow-y: auto;">
+                </select>
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">Зберегти статус</button>
+        </form>
+    }
+}
+@if (User.IsInRole("Client") || User.IsInRole("Admin"))
+{
+
+    @*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*@
+
+    <div class="row">
+        <div class="col-2">Статус замовлення:</div>
+        <div class="col-4">
+            @if (Model.Status != null)
+            {
+                @if (Model.Status.StatusName == "Прийнято")
+                {
+                    <span class="text-success">@Model.Status.StatusName</span>
+                }
+                else if (Model.Status.StatusName == "Виконується")
+                {
+                    <span class="text-warning">@Model.Status.StatusName</span>
+                }
+                else if (Model.Status.StatusName == "Не прийнято")
+                {
+                    <span class="text-danger">@Model.Status.StatusName</span>
+                }
+            }
+            else
+            {
+                <span class="text-muted">Статус ще не встановлено</span>
+            }
+        </div>
+    </div>
+
+}
+
+@if (User.IsInRole("Admin"))
+{
+    <hr />
+    <div class="col-1">
+        <form method="post" asp-action="Delete" asp-route-id="@Model.Id">
+            <button type="submit" class="btn btn-danger">Видалити</button>
+        </form>
+    </div>
+}
+
+@*</div>
+
+
+</div>
+*@
+@*<div class="col-1">*@
+    @*@if (User.Identity.IsAuthenticated)
+    {
+        var authenticatedUserId = UserManager.GetUserId(User);
+        if (authenticatedUserId == Model.UserId || User.IsInRole("Admin"))
+        {*@
+
+
+           @*??????????????????????????????*@
+    @*@if (User.Identity.IsAuthenticated && User.IsInRole("Seller") && Model.Listing != null && UserManager.GetUserId(User) == Model.Listing.UserId)
+    {
+        <!-- Allow editing/deleting only for the owner (seller) of the listing -->
+        <form method="post" asp-action="Delete" asp-route-id="@Model.Id">
+            <button type="submit" class="btn btn-danger">Видалити</button>
+        </form>
+        <hr />
+
+        <form method="post" asp-action="UpdateStatus" asp-route-id="@Model.Id">
+            <div class="form-group">
+                <label for="Status">Статус:</label>
+                <select class="form-control" id="Status" asp-for="StatusId" asp-items="ViewBag.StatusList" style="max-height: 150px; overflow-y: auto;">
+                </select>
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">Зберегти статус</button>
+        </form>
+    }
+</div>*@
+
+<!-- Display order status for customer and administrator -->
+@*@if (User.Identity.IsAuthenticated && (UserManager.GetUserId(User) == Model.CustomerNumber.ToString() || User.IsInRole("Admin")))
+{
+    <div class="row">
+        <div class="col-2">Статус замовлення:</div>
+        <div class="col-4">@Model.Status.StatusName</div>
+    </div>
+}*@
+
+  @*  @if (User.Identity.IsAuthenticated && User.IsInRole("Seller") && Model.Listing != null && UserManager.GetUserId(User) == Model.Listing.UserId)
+    {
+        <!-- Allow editing status only for the seller of the listing -->
+        <form method="post" asp-action="UpdateStatus" asp-route-id="@Model.Id">
+            <div class="form-group">
+                <label for="Status">Статус:</label>
+                <select class="form-control" id="Status" asp-for="StatusId" asp-items="ViewBag.StatusList" style="max-height: 150px; overflow-y: auto;">
+                </select>
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">Зберегти статус</button>
+        </form>
+    }
+}*@
+
+
+

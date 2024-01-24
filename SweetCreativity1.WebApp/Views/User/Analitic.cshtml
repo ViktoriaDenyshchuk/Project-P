@@ -1,0 +1,48 @@
+﻿@model SweetCreativity1.Core.Entities.User
+@{
+    ViewData["Title"] = "Analitic";
+}
+
+<h1>Статистика</h1>
+
+<div class="row">
+    <div class="col-3">Всього моїх оголошень:</div>
+    <div class="col-3"><strong>@ViewBag.TotalListings</strong></div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-3">Вподобання:</div>
+    <div class="col-3"><strong>@ViewBag.TotalFavorite</strong></div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-3">Всього зроблених замовлень:</div>
+    <div class="col-3"><strong>@ViewBag.TotalSales</strong></div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-3">Найбільш популярне замовлення:</div>
+    <div class="col-3"><strong>@ViewBag.MostOrderedListing.Title - @ViewBag.MostOrderedListingCount</strong></div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-3">Прийняті замовлення:</div>
+    <div class="col-3"><strong>@ViewBag.AcceptedOrders</strong></div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-3">Замовлення виконуються:</div>
+    <div class="col-3"><strong>@ViewBag.InProgress</strong></div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-3">Не виконані замовлення:</div>
+    <div class="col-3"><strong>@ViewBag.NotAcceptedOrders</strong></div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-3">Зароблено:</div>
+    <div class="col-3"><strong>@ViewBag.AcceptedOrdersTotalPrice</strong></div>
+</div>
+
+
