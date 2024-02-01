@@ -1,0 +1,390 @@
+﻿@using SweetCreativity1.Core.Entities;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Календар</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #calendar {
+            max-width: 300px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+            .table th, .table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: center;
+            }
+
+            .table th {
+                background-color: #f2f2f2;
+            }
+
+        .prev, .next {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #435EBE;
+            color: white;
+            border-radius: 8px;
+        }
+
+            .prev:hover, .next:hover {
+                background-color: #314682;
+            }
+
+       
+        .today {
+            color: #435EBE;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        .selected-event {
+            background-color: #FFD700; 
+        }
+
+        .promotion-block0 {
+            width: 300px;
+        }
+        .promotion-block1 {
+            width: 300px;
+            color: #435EBE;
+             
+            margin-left: 400px; 
+        }
+
+    </style>
+</head>
+<body>
+    <div id="calendar"></div>
+    @*<button id="addEventBtn" onclick="addEvent()">Додати подію</button>*@
+    <div id="event-list"></div>
+   
+    @*<div>
+        <input type="text" id="newEventText" placeholder="Введіть текст події">
+        <button onclick="saveNewEvent()">Зберегти подію</button>*@
+  
+
+    
+    <div id="side-events"></div>
+        @*<h2>Події</h2>*@
+        <ul id="side-event-list"></ul>
+
+    
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const calendar = document.getElementById('calendar');
+            const greetingElement = document.createElement('div');
+            greetingElement.id = 'greeting';
+            document.body.appendChild(greetingElement);
+
+            
+            const model = {
+                SelectedDay: null,
+                SelectedMonth: null,
+                SelectedYear: null
+            };
+            function createCalendar(year, month) {
+    const firstDay = new Date(year, month, 1);
+    const startingDay = firstDay.getDay();
+    const today = new Date();
+
+    const monthNames = [
+        "Січень", "Лютий", "Березень",
+        "Квітень", "Травень", "Червень",
+        "Липень", "Серпень", "Вересень",
+        "Жовтень", "Листопад", "Грудень"
+    ];
+
+    let html = '<div class="month">' +
+        `<button class="prev" onclick="prevMonth()">&#10094;</button>` +
+        `<h2>${monthNames[month]} ${year}</h2>` +
+        `<button class="next" onclick="nextMonth()">&#10095;</button>` +
+        '</div>';
+
+    
+    const isPromotionPeriod = isDateInPromotionPeriod(model.SelectedDay, model.SelectedMonth, model.SelectedYear);
+
+    if (isPromotionPeriod) {
+       
+                    html += '<div class="promotion-block0">' + '<div class="promotion-block1">' +
+            '<div class="promotion-title"><h3>Суперакція!</h3></div>' +
+            '<div class="promotion-description">' +
+            'Отримайте знижку 5% за кожне друге замовлення!' +
+            '</div>' +
+            '<div class="promotion-conditions">' +
+            'Умови акції: Замовте дві або більше одиниць і отримайте знижку 5% за кожний другий товар до загальної суми.' +
+            '<br /> Кількість одиниць обмежена - 15 ' +
+            '</div>' +
+                        '</div>' +
+                        '</div>';
+    }
+    else{
+                    html += '<div class="promotion-block0">' + '<div class="promotion-block1">' +
+                        '<div class="promotion-title">На сьогодні немає доступних акцій!</div>'+ '</div>'+ '</div>';
+    }
+  
+        html += '<table class="table">' +
+            '<tr>' +
+            '<th>Пн</th>' +
+            '<th>Вт</th>' +
+            '<th>Ср</th>' +
+            '<th>Чт</th>' +
+            '<th>Пт</th>' +
+            '<th>Сб</th>' +
+            '<th>Нд</th>' +
+            '</tr>';
+
+        let day = 1;
+        let startingDayIndex = (startingDay === 0) ? 6 : startingDay - 1;
+
+        for (let i = 0; i < 6; i++) {
+            html += '<tr>';
+
+            for (let j = 0; j < 7; j++) {
+                if (i === 0 && j < startingDayIndex) {
+                    html += '<td></td>';
+                } else if (day > daysInMonth(year, month)) {
+                    break;
+                } else {
+                    const cellClass = (day === today.getDate() && year === today.getFullYear() && month === today.getMonth()) ? 'today' : '';
+                    const selectedClass = (day === model.SelectedDay && year === model.SelectedYear && month === model.SelectedMonth) ? 'selected' : '';
+                    html += `<td class="${cellClass} ${selectedClass}" onclick="selectDay(${day}, ${month}, ${year})">${day}</td>`;
+                    day++;
+                }
+            }
+
+            html += '</tr>';
+        }
+
+        html += '</table>';
+    
+
+    calendar.innerHTML = html;
+
+   
+}
+
+function isDateInPromotionPeriod(day, month, year) {
+    const promotionStart = new Date(2024, 0, 31); 
+    const promotionEnd = new Date(2024, 1, 25);  
+
+    const selectedDate = new Date(year, month, day);
+
+    return selectedDate >= promotionStart && selectedDate <= promotionEnd;
+}
+
+
+            function daysInMonth(year, month) {
+                return new Date(year, month + 1, 0).getDate();
+            }
+            
+            function loadEventsForDay(day, month, year) {
+                fetch(`/Calendar/GetEventsForDay?day=${day}&month=${month}&year=${year}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        
+                        displayEvents(data);
+                    })
+                    .catch(error => console.error("Error:", error));
+            }
+            // Функція для відображення подій
+            //function displayEvents(events) {
+            //    const eventList = document.getElementById('event-list');
+            //    eventList.innerHTML = ''; // Очищення списку подій
+
+            //    events.forEach(event => {
+            //        const eventItem = document.createElement('div');
+            //        eventItem.classList.add('event-item');
+            //        eventItem.innerHTML = `<strong>${event.Text}</strong><br>Власник: ${event.User.UserName}`;
+            //        eventList.appendChild(eventItem);
+            //    });
+            //}
+            window.selectDay = function (day, month, year) {
+                model.SelectedDay = day;
+                model.SelectedMonth = month;
+                model.SelectedYear = year;
+                createCalendar(currentYear, currentMonth);
+                loadEventsForDay(day, month, year);
+            };
+
+            let currentYear = new Date().getFullYear();
+            let currentMonth = new Date().getMonth();
+
+            createCalendar(currentYear, currentMonth);
+
+            window.prevMonth = function () {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                createCalendar(currentYear, currentMonth);
+            };
+
+            window.nextMonth = function () {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                createCalendar(currentYear, currentMonth);
+            };
+            window.addEvent = function () {
+                const selectedDate = new Date(currentYear, currentMonth, model.SelectedDay);
+                const eventData = {
+                    UserId: "userId", 
+                    Date: selectedDate,
+                    Text: prompt("Enter event text:")
+                };
+
+                addEventToServer(eventData);
+            };
+
+            function addEventToServer(eventData) {
+                fetch("/Calendar/AddEvent", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(eventData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        createCalendar(currentYear, currentMonth);
+                    })
+                    .catch(error => console.error("Error:", error));
+            }
+
+
+
+            window.deleteEvent = function () {
+               
+                deleteEventFromServer(model.SelectedDay, currentMonth, currentYear);
+            };
+
+          
+            //function addEventToServer(eventData) {
+            //    fetch("/Calendar/AddEvent", {
+            //        method: "POST",
+            //        headers: {
+            //            "Content-Type": "application/json"
+            //        },
+            //        body: JSON.stringify(eventData)
+            //    })
+            //        .then(response => response.json())
+            //        .then(data => {
+            //            alert(data.message);
+            //            createCalendar(currentYear, currentMonth);
+            //        })
+            //        .catch(error => console.error("Error:", error));
+            //}
+
+           
+            function deleteEventFromServer(day, month, year) {
+                fetch(`/Calendar/DeleteEvent?day=${day}&month=${month}&year=${year}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        createCalendar(currentYear, currentMonth);
+                    })
+                    .catch(error => console.error("Error:", error));
+            }
+            function getEventsForDay(day, month, year) {
+                const selectedDate = new Date(year, month, day);
+               
+                return [
+                    { Description: "Подія 1" },
+                    { Description: "Подія 2" }
+                ];
+            }
+            window.saveNewEvent = function () {
+                console.log("saveNewEvent function called");
+                const newEventText = document.getElementById('newEventText').value;
+
+                if (!newEventText) {
+                    alert('Введіть текст події.');
+                    return;
+                }
+
+                console.log("Event text:", newEventText);
+
+                const selectedDate = new Date(currentYear, currentMonth, model.SelectedDay);
+                const eventData = {
+                    UserId: "userId",
+                    Date: selectedDate,
+                    Text: newEventText
+                };
+
+                console.log("Event data:", eventData);
+
+            };
+
+
+            function loadEventsForDay(day, month, year) {
+              
+                fetch(`/Calendar/GetEventsForDay?day=${day}&month=${month}&year=${year}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+               
+                        displayEvents(data);
+
+                        displaySideEvents(data);
+                    })
+                    .catch(error => console.error("Error:", error));
+            }
+
+         
+            function displaySideEvents(events) {
+                const sideEventList = document.getElementById('side-event-list');
+                sideEventList.innerHTML = '';
+
+                events.forEach(event => {
+                    const sideEventItem = document.createElement('li');
+                    sideEventItem.innerHTML = `<strong>ID:</strong> ${event.Id}, <strong>Text:</strong> ${event.Text}, <strong>Date:</strong> ${event.Date}, <strong>User ID:</strong> ${event.UserId}`;
+                    sideEventList.appendChild(sideEventItem);
+                });
+            }
+
+          
+
+            createCalendar(currentYear, currentMonth);
+            console.log("Calendar updated after saving new event");
+
+        });
+    </script>
+</body>
+</html>

@@ -73,6 +73,25 @@ namespace SweetCreativity1.Reposotories.Repos
         {
             return _context.Listings.Find(listingId);
         }
+        //public IEnumerable<Listing> SearchListings(string searchTerm)
+        //{
+        //    // Ваш код для виконання пошукового запиту в базі даних
+        //    // Наприклад, використовуйте LINQ для фільтрації результатів
+
+        //    if (string.IsNullOrEmpty(searchTerm))
+        //    {
+        //        // Якщо пошуковий термін не вказано, поверніть усі оголошення
+        //        return _context.Listings.ToList();
+        //    }
+        //    else
+        //    {
+        //        // Використовуйте LINQ для фільтрації результатів за назвою та описом
+        //        return _context.Listings
+        //            .Where(listing => listing.Title.Contains(searchTerm) || listing.Description.Contains(searchTerm))
+        //            .ToList();
+        //    }
+        //}
+
 
     }
 }

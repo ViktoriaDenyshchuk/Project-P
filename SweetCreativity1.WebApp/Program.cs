@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SweetCreativity.Reposotories.Interfaces;
@@ -6,6 +8,8 @@ using SweetCreativity1.Core.Context;
 using SweetCreativity1.Core.Entities;
 using SweetCreativity1.Reposotories.Interfaces;
 using SweetCreativity1.Reposotories.Repos;
+//using SweetCreativity1.WebApp.Hubs;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,8 +36,14 @@ builder.Services.AddScoped<IUserReposotory, UserReposotory>();
 builder.Services.AddScoped<IOrderReposotory, OrderReposotory>();
 builder.Services.AddScoped<IConstructionReposotory, ConstructionReposotory>();
 builder.Services.AddScoped<IFavoriteReposotory, FavoriteReposotory>();
+builder.Services.AddScoped<IEventReposotory, EventReposotory>();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-
+//?
+builder.Services.AddFluentValidationAutoValidation();
+// enable client-side validation
+builder.Services.AddFluentValidationClientsideAdapters();
+// Load an assembly reference rather than using a marker type.
+builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
@@ -86,5 +96,7 @@ app.MapControllerRoute(
         pattern: "{controller=Favorite}/{action=RemoveFromFavorites}/{id?}");
 
 app.MapRazorPages();
+
+    //app.MapHub<ChatHub>("/chatHub"); // Map the ChatHub
 
 app.Run();

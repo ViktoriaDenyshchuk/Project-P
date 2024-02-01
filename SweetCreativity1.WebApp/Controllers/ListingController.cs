@@ -49,6 +49,28 @@ namespace SweetCreativity1.WebApp.Controllers
 
             return View(allListings);
         }
+        //[HttpGet]
+        //public IActionResult Search(string searchTerm)
+        //{
+        //    var searchResults = listingReposotory.SearchListings(searchTerm);
+        //    return View("Index", searchResults);
+        //}
+        [HttpGet]
+        public IActionResult Search(string searchTerm)
+        {
+            var searchResults = _context.Listings
+                .Where(listing => listing.Title.Contains(searchTerm)
+                || listing.Description.Contains(searchTerm)
+                || listing.Product.Contains(searchTerm)
+                || listing.Location.Contains(searchTerm)
+                || listing.User.FullName.Contains(searchTerm)
+                || listing.Price.ToString().Contains(searchTerm)
+                || listing.Weight.ToString().Contains(searchTerm))
+                .ToList();
+
+            return View("Index", searchResults);
+        }
+
 
         [Authorize(Roles = "Seller")]
         public IActionResult MyListings()

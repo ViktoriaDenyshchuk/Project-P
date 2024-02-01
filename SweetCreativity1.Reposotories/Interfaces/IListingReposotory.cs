@@ -16,5 +16,6 @@ namespace SweetCreativity1.Reposotories.Interfaces
         Task SaveChangesAsync();
         int Find(int id);
         Listing GetListingById(int listingId);
+        //IEnumerable<Listing> SearchListings(string searchTerm);
     }
 }

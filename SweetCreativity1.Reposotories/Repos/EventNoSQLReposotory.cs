@@ -1,34 +1,42 @@
-﻿using SweetCreativity1.Core.Entities;
+﻿
+using SweetCreativity1.Core.Entities;
 using SweetCreativity1.Reposotories.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SweetCreativity1.Reposotories.Repos
 {
-    internal class ListingNoSQLReposotory : IListingReposotory
+    internal class EventNoSQLRepository : IEventReposotory
     {
-        public ListingNoSQLReposotory()
-        {
-
-        }
-
-        public void Add(Listing obj)
+        public void Add(Event obj)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(Listing obj)
+        public void Delete(Event obj)
         {
             throw new NotImplementedException();
         }
 
-        public Listing Get(int id)
+        public Event Get(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Listing> GetAll()
+        public IEnumerable<Event> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Event> GetEventsByUserId(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Event obj)
         {
             throw new NotImplementedException();
         }
@@ -37,35 +45,14 @@ namespace SweetCreativity1.Reposotories.Repos
         {
             throw new NotImplementedException();
         }
-
-        public void Update(Listing obj)
+        public Event GetEventByDate(int day, int month, int year)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Listing> GetByIdAsync(int id)
+        public IEnumerable<Event> GetEventsForDay(DateTime selectedDate)
         {
             throw new NotImplementedException();
         }
-
-        int IListingReposotory.Find(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task IListingReposotory.SaveChangesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Listing GetListingById(int listingId)
-        {
-            throw new NotImplementedException();
-        }
-
-        //public IEnumerable<Listing> SearchListings(string searchTerm)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }

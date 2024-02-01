@@ -13,6 +13,14 @@
 <div class="page-heading" style="padding-left: 300px;">
     <h3>@ViewData["Title"]</h3>
 </div>
+@using (Html.BeginForm("Search", "Listing", FormMethod.Get))
+{
+    <div class="form-group">
+        <label for="searchTerm">Пошук:</label>
+        <input type="text" id="searchTerm" name="searchTerm" class="form-control" />
+        <button type="submit" class="btn btn-primary mt-2">Знайти</button>
+    </div>
+}
 
 <div class="page-content">
     <div class="row">

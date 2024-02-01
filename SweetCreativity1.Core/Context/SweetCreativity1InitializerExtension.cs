@@ -19,6 +19,7 @@ namespace SweetCreativity1.Core.Context
             // seedUser(builder);
             seedOrder(builder, new string[] { clId, admId });
             seedStatus(builder);
+            seedEvent(builder, new string[] { selId, admId });
         }
         private static void seedStatus(ModelBuilder builder)
         {
@@ -100,6 +101,25 @@ namespace SweetCreativity1.Core.Context
                       NameCategory = "Вафлі"
                   }
                  );
+        }
+        static void seedEvent(ModelBuilder builder, string[] sellerIds)
+        {
+            builder.Entity<Event>().HasData(
+              new Event
+              {
+                  Id = 1,
+                  Text = "Акція на всю продукцію від мене 10%",
+                  UserId = sellerIds[0],
+                  Date = DateTime.Now
+              },
+              new Event
+              {
+                  Id = 2,
+                  Text = "Акція на торти нашого виробництва 5%",
+                  UserId = sellerIds[1],
+                  Date = DateTime.Now
+              }
+                );
         }
         static void seedListing(ModelBuilder builder, string[] sellerIds)
         {

@@ -85,10 +85,13 @@ namespace SweetCreativity1.Reposotories.Repos
         {
             throw new NotImplementedException();
         }
-
-    //public void Find(int obj)
-    //{
-    //    throw new NotImplementedException();
-    //}
-}
+        public IEnumerable<Event> GetEventsForDay(DateTime selectedDate)
+        {
+            throw new NotImplementedException();
+        }
+        //public void Find(int obj)
+        //{
+        //    throw new NotImplementedException();
+        //}
+    }
 }

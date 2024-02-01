@@ -143,10 +143,9 @@
 <div class="row">
     <div class="col-2">
         <a href="@Url.Action("Create", "Order", new { listingId = Model.Id, nameOrder = Model.Title, price = Model.Price })" class="btn btn-success"
-           style="width: 200px; margin-top: 10px; margin-bottom: 10px;">Зробити замовлення</a>
+               style="width: 200px; margin-top: 10px;">Зробити замовлення</a>
     </div>
 </div>
-<hr />
 }
 
 @*@if (User.Identity.IsAuthenticated)
@@ -161,10 +160,29 @@
 {
     <form method="post" asp-controller="Favorite" asp-action="AddToFavorites">
         <input type="hidden" name="listingId" value="@Model.Id" />
-        <button type="submit">Вподобати</button>
+        <div>
+        <button type="submit" class="heart-button">
+            <i class="bi bi-heart" style="font-size: 24px;"></i>
+            </button>
+        </div>
     </form>
     <hr />
 }
+
+<style>
+    .heart-button {
+        background: none; /* Remove background color */
+        border: none; /* Remove border */
+        padding: 0; /* Remove padding */
+        color: #435EBE; /* Set the heart color */
+        margin-left: 250px;
+    }
+
+        .heart-button:hover {
+            color: #314682;
+        }
+</style>
+
 @*Додавання коментаря та відгуку*@
 @if (User.Identity.IsAuthenticated)
 {
