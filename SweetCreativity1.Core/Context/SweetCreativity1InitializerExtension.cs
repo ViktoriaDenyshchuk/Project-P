@@ -48,25 +48,25 @@ namespace SweetCreativity1.Core.Context
             builder.Entity<Order>().HasData(
                 new Order
                 {
-                    Id = 1,
-                    NameOrder = "Торт Наполеон",
-                    Quantity = 1,
-                    TotalPrice = 249.99m,
-                    CreatedAtOrder = DateTime.Now,
-                    CustomerNumber = 0985684335,
-                    UserId = clientIds[0],
-                    ListingId = 1,
-                },
-                new Order
-                {
                     Id = 2,
                     NameOrder = "Торт Спартак",
                     Quantity = 1,
                     TotalPrice = 399.99m,
                     CreatedAtOrder = DateTime.Now,
                     CustomerNumber = 0985688735,
-                    UserId = clientIds[1],
+                    UserId = clientIds[0],
                     ListingId = 2,
+                },
+                new Order
+                {
+                    Id = 1,
+                    NameOrder = "Торт Наполеон",
+                    Quantity = 1,
+                    TotalPrice = 249.99m,
+                    CreatedAtOrder = DateTime.Now,
+                    CustomerNumber = 0985684335,
+                    UserId = clientIds[1],
+                    ListingId = 1,
                 }
                 );
         }

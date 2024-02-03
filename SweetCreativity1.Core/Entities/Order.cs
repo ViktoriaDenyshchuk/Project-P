@@ -38,5 +38,6 @@ namespace SweetCreativity1.Core.Entities
 
         public virtual Status? Status { get; set; }
         public int? StatusId { get; set; }//?
+        public List<ChatMessage>? ChatMessage { get; set; }
     }
 }

@@ -28,6 +28,7 @@ public class SweetCreativity1Context : IdentityDbContext<User>
     public DbSet<Favorite> Favorites => Set<Favorite>();
     //public DbSet<Statistic> Statistics { get; set; }
     public DbSet<Event> Events => Set<Event>();
+    public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //base.OnModelCreating(modelBuilder);

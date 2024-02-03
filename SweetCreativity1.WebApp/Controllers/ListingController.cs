@@ -358,13 +358,38 @@ public IActionResult Edit(Listing item)
 }
 
 
+        //[Authorize(Roles = "Client")]
+        //[HttpPost]
+        //public IActionResult AddResponse(int listingId, string textResponse)
+        //{
+        //    var listing = _context.Listings
+        //        .Include(l => l.Responses)
+        //        .FirstOrDefault(l => l.Id == listingId);
+
+        //    if (listing == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var newResponse = new Response
+        //    {
+        //        TextResponse = textResponse,
+        //        CreatedAtResponse = DateTime.Now
+        //    };
+
+        //    listing.Responses.Add(newResponse);
+        //    _context.SaveChanges();
+
+        //    // Після додавання відгуку перенаправте користувача на сторінку оголошення
+        //    return RedirectToAction("Details", new { id = listingId });
+        //}
         [Authorize(Roles = "Client")]
         [HttpPost]
-        public IActionResult AddResponse(int listingId, string textResponse)
+        public async Task<IActionResult> AddResponse(int listingId, string textResponse, string userId)
         {
-            var listing = _context.Listings
+            var listing = await _context.Listings
                 .Include(l => l.Responses)
-                .FirstOrDefault(l => l.Id == listingId);
+                .FirstOrDefaultAsync(l => l.Id == listingId);
 
             if (listing == null)
             {
@@ -374,17 +399,18 @@ public IActionResult Edit(Listing item)
             var newResponse = new Response
             {
                 TextResponse = textResponse,
-                CreatedAtResponse = DateTime.Now
+                CreatedAtResponse = DateTime.Now,
+                UserId = userId // Додайте ідентифікатор користувача до відгуку
             };
 
             listing.Responses.Add(newResponse);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             // Після додавання відгуку перенаправте користувача на сторінку оголошення
             return RedirectToAction("Details", new { id = listingId });
         }
 
-        
+
 
 
         //[HttpPost]

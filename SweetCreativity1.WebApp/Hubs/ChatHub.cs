@@ -1,13 +1,29 @@
-﻿//using System.Threading.Tasks;
+﻿//// ChatHub.cs
 //using Microsoft.AspNetCore.SignalR;
+//using System.Threading.Tasks;
 
-//namespace SweetCreativity1.WebApp.Hubs
+//public class ChatHub : Hub
 //{
-//    public class ChatHub : Hub
+//    public async Task SendMessage(string user, string message, string orderId)
 //    {
-//        public async Task SendMessage(string userId, string message)
-//        {
-//            await Clients.User(userId).SendAsync("ReceiveMessage", message);
-//        }
+//        await Clients.Group(orderId).SendAsync("ReceiveMessage", user, message);
+//    }
+
+//    public async Task JoinOrderGroup(string orderId)
+//    {
+//        await Groups.AddToGroupAsync(Context.ConnectionId, orderId);
 //    }
 //}
+using Microsoft.AspNetCore.SignalR;
+
+namespace SweetCreativity1.WebApp.ChatHub
+{
+    public class ChatHub : Hub
+    {
+        public async Task Send(string name, string message)
+        {
+            // Call the SendAsync method to update clients.
+            await Clients.All.SendAsync("ReceiveMessage", name, message);
+        }
+    }
+}

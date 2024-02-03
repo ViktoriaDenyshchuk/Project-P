@@ -8,8 +8,9 @@ using SweetCreativity1.Core.Context;
 using SweetCreativity1.Core.Entities;
 using SweetCreativity1.Reposotories.Interfaces;
 using SweetCreativity1.Reposotories.Repos;
+using SweetCreativity1.WebApp.ChatHub;
 //using SweetCreativity1.WebApp.Hubs;
-
+//[assembly: OwinStartup(typeof(SweetCreativity1.Startup))]
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,13 +39,14 @@ builder.Services.AddScoped<IConstructionReposotory, ConstructionReposotory>();
 builder.Services.AddScoped<IFavoriteReposotory, FavoriteReposotory>();
 builder.Services.AddScoped<IEventReposotory, EventReposotory>();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+//builder.Services.AddScoped<IChatMessageReposotory, ChatMessageReposotory>();
 //?
 builder.Services.AddFluentValidationAutoValidation();
 // enable client-side validation
 builder.Services.AddFluentValidationClientsideAdapters();
 // Load an assembly reference rather than using a marker type.
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-
+builder.Services.AddSignalR();//?
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -97,6 +99,7 @@ app.MapControllerRoute(
 
 app.MapRazorPages();
 
-    //app.MapHub<ChatHub>("/chatHub"); // Map the ChatHub
-
+//app.MapHub<ChatHub>("/chatHub");
+//app.MapHub<ChatHub>("/chatHub");
+//app.MapSignalR();
 app.Run();

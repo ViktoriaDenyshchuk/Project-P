@@ -216,7 +216,7 @@
             </div>
 
         </form>
-        <form asp-action="AddResponse" asp-controller="Listing">
+        @*<form asp-action="AddResponse" asp-controller="Listing">
             <input type="hidden" name="listingId" value="@Model.Id" />
             <div class="form-group">
                 <label for="textResponse">Текст відгуку:</label>
@@ -227,7 +227,21 @@
             <button type="submit" class="btn btn-primary">Зберегти відгук</button>
             </div>
             </div>
-        </form>
+        </form>*@
+                <form method="post" asp-action="AddResponse" asp-controller="Listing">
+                    <input type="hidden" name="listingId" value="@Model.Id" />
+                    <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" /> <!-- Додайте приховане поле для userId -->
+                    <div class="form-group">
+                        <label for="textResponse">Текст відгуку:</label>
+                        <textarea name="textResponse" class="form-control"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="fixed-right p-3 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Зберегти відгук</button>
+                        </div>
+                    </div>
+                </form>
+
     </div>
 </div>
 <hr />
@@ -264,7 +278,15 @@
 
         @foreach (var response in Model.Responses)
         {
-            <li>@response.TextResponse</li>
+            var userId = @response.UserId; // Замініть це на відповідний спосіб отримання ідентифікатора користувача
+            var user = await UserManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                <li>
+                    <strong>@user.FullName:</strong> @response.TextResponse
+            </li>
+            }
         }
     </ul>
 }

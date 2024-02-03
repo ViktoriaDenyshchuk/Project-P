@@ -121,10 +121,177 @@
         </form>
     </div>
 }
+@*<!-- Блок для відображення повідомлень -->
+<div id="chat-container">
+    <div id="chat-messages"></div>
+</div>*@
 
+@*<!-- Форма для відправлення повідомлень -->
+<div id="message-form">
+    <input type="text" id="message-input" placeholder="Введіть повідомлення">
+    <button onclick="sendMessage()">Відправити</button>
+</div>
 
+<!-- JavaScript код -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const chatMessagesContainer = document.getElementById('chat-messages');
+        const messageInput = document.getElementById('message-input');
 
+        function loadMessages() {
+            // Отримання повідомлень з сервера (AJAX-запит)
+            fetch(`/api/getMessages?orderId=${orderId}`)
+                .then(response => response.json())
+                .then(data => displayMessages(data))
+                .catch(error => console.error("Error:", error));
+        }
 
+        function displayMessages(messages) {
+            chatMessagesContainer.innerHTML = '';
+            messages.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.textContent = `${message.Sender}: ${message.Content}`;
+                chatMessagesContainer.appendChild(messageElement);
+            });
+        }
+
+        function sendMessage() {
+            const content = messageInput.value;
+            const data = { content, orderId: orderId };
+
+            // Відправлення повідомлення на сервер (AJAX-запит)
+            fetch('/api/sendMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Обробка відповіді від сервера (якщо потрібно)
+                    // Наприклад, оновлення чату після успішної відправки
+                    loadMessages();
+                })
+                .catch(error => console.error("Error:", error));
+        }
+
+        // Початкове завантаження повідомлень при завантаженні сторінки
+        loadMessages();
+    });
+</script>
+*@<div><h3>Чат</h3>
+    @if (!User.IsInRole("Admin"))
+    {
+        <form method="post" asp-action="AddMessage" asp-controller="Order">
+            <input type="hidden" name="orderId" value="@Model.Id" />
+        <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" /> 
+        <div class="form-group">
+            <label for="textMessage">Написати повідомлення:</label>
+            <textarea name="textMessage" class="form-control"></textarea>
+        </div>
+        <div class="row">
+            <div class="fixed-right p-3 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Відправити</button>
+            </div>
+        </div>
+    </form>
+    }
+</div>
+@*@if (Model.ChatMessage != null && Model.ChatMessage.Count > 0)
+{
+    <ul>
+        @foreach (var message in Model.ChatMessage)
+        {
+            <li>
+                <strong>@message.UserId:</strong> @message.TextMessage
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Наразі немає жодних повідомлень.</p>
+}*@
+@if (Model.ChatMessage != null && Model.ChatMessage.Count > 0)
+{
+    <ul>
+
+        @foreach (var message in Model.ChatMessage)
+        {
+            var userId = @message.UserId; // Замініть це на відповідний спосіб отримання ідентифікатора користувача
+            var user = await UserManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                <li>
+                    <strong>@user.FullName:</strong> @message.TextMessage
+                </li>
+            }
+        }
+    </ul>
+}
+else
+{
+    <p>Наразі немає жодних відгуків.</p>
+}
+@*
+<div class="container">
+    <div class="row p-1">
+        <div class="col-1">User</div>
+        <div class="col-5"><input type="text" id="userInput" /></div>
+    </div>
+    <div class="row p-1">
+        <div class="col-1">Message</div>
+        <div class="col-5"><input type="text" id="messageInput" /></div>
+    </div>
+    <div class="row p-1">
+        <div class="col-6 text-end">User</div>
+        <input type="button" id="sendButton" value="Send Message" />
+    </div>
+    <div class="row p-1">
+        <div class="col-6"></div>
+        <hr />
+    </div>
+</div>
+<div class="row p-1">
+    <div class="col-6">
+        <ul id="messageList"></ul>
+    </div>
+</div>@*//assets/vendors/iconly/bold.css*@
+@*<script src="~/wwwroot/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/wwwroot/lib/microsoft/chat.js"></script>
+<!-- Оновлений JavaScript код -->
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+    document.getElementById("sendButton").disabled = true;
+
+    connection.on("ReceiveMessage", function (user, message) {
+        var li = document.createElement("li");
+        li.textContent = `${user}: ${message}`;
+        document.getElementById("messageList").appendChild(li);
+    });
+
+    connection.start().then(function () {
+        document.getElementById("sendButton").disabled = false;
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    document.getElementById("sendButton").addEventListener("click", function (event) {
+        var user = document.getElementById("userInput").value;
+        var message = document.getElementById("messageInput").value;
+        var orderId = /* Отримайте ID замовлення */;
+
+        // Оновлення коду: Відправлення повідомлення на сервер
+        connection.invoke("SendMessage", user, message, orderId).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        event.preventDefault();
+    });
+</script>*@
 
 @*</div>
 

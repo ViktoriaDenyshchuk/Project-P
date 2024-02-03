@@ -18,7 +18,10 @@ public class HomeController : Controller
     {
         return View();
     }
-
+    //public ActionResult Chat()
+    //{
+    //    return View();
+    //}
     public IActionResult Privacy()
     {
         return View();

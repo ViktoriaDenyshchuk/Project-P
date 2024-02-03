@@ -127,6 +127,7 @@ namespace SweetCreativity.WebApp.Controllers
         public IActionResult Details(int id)
         {
             var order = _context.Orders
+                .Include(o => o.ChatMessage)
                 .Include(o => o.Listing)
                 .FirstOrDefault(o => o.Id == id);
 
@@ -385,6 +386,31 @@ namespace SweetCreativity.WebApp.Controllers
             return RedirectToAction("IndexSeller");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddMessage(int orderId, string textMessage, string userId)
+        {
+            var order = await _context.Orders
+                .Include(o => o.ChatMessage)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var newMessage = new ChatMessage
+            {
+                TextMessage = textMessage,
+                CreatedAtMessage = DateTime.Now,
+                UserId = userId // Додайте ідентифікатор користувача до відгуку
+            };
+
+            order.ChatMessage.Add(newMessage);
+            await _context.SaveChangesAsync();
+
+            // Після додавання відгуку перенаправте користувача на сторінку оголошення
+            return RedirectToAction("Details", new { id = orderId });
+        }
     }
 
 
