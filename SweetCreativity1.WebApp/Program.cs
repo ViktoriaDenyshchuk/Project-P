@@ -8,7 +8,7 @@ using SweetCreativity1.Core.Context;
 using SweetCreativity1.Core.Entities;
 using SweetCreativity1.Reposotories.Interfaces;
 using SweetCreativity1.Reposotories.Repos;
-using SweetCreativity1.WebApp.ChatHub;
+using Microsoft.AspNetCore.SignalR;
 //using SweetCreativity1.WebApp.Hubs;
 //[assembly: OwinStartup(typeof(SweetCreativity1.Startup))]
 
@@ -46,7 +46,13 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 // Load an assembly reference rather than using a marker type.
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddSignalR();//?
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
+}).AddHubOptions<ChatHub>(options =>
+{
+    options.EnableDetailedErrors = true;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -67,29 +73,10 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
-//app.MapControllerRoute(
-//    name: "ConfirmDelete",
-//    pattern: "{controller=Listing}/{action=DeleteConfirmed}/{id?}",
-//    defaults: new { controller = "Listing", action = "DeleteConfirmed" }
-//);
-
-//app.MapControllerRoute(
-//    name: "Analitic",
-//    pattern: "/user/analitic",
-//    defaults: new { controller = "User", action = "Analitic" });
-
-
-//app.MapControllerRoute(
-//    name: "MyListings",
-//    pattern: "/listing/mylistings",
-//    defaults: new { controller = "Listing", action = "MyListings" });
-
-//app.MapControllerRoute(
-//    name: "Favorite",
-//    pattern: "/favorite/index",
-//    defaults: new { controller = "Favorite", action = "Index" });
-
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/chathub");
+});
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

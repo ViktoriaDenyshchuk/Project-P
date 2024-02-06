@@ -431,6 +431,7 @@ namespace SweetCreativity1.Core.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TextMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAtMessage = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SenderName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     OrderId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -454,9 +455,9 @@ namespace SweetCreativity1.Core.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1def7771-1847-4385-889a-0f217691bb72", null, "Client", "CLIENT" },
-                    { "660f7d8b-59f0-415c-baf8-0b789fe61558", null, "Admin", "ADMIN" },
-                    { "c8a9456a-fb3d-4d9b-a4c5-9c4df40ccfbc", null, "Seller", "SELLER" }
+                    { "5417ded7-73ee-48dc-9955-db558bee06c0", null, "Seller", "SELLER" },
+                    { "85e540b5-011b-4258-b1ac-297e7646f72f", null, "Admin", "ADMIN" },
+                    { "f5098f88-3855-4821-8cd1-3ec42ca4ae4e", null, "Client", "CLIENT" }
                 });
 
             migrationBuilder.InsertData(
@@ -464,9 +465,9 @@ namespace SweetCreativity1.Core.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CoverPath", "Email", "EmailConfirmed", "FullName", "LeastSoldProductId", "LockoutEnabled", "LockoutEnd", "MostSoldProductId", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SalePrice", "SecurityStamp", "TotalListings", "TotalSales", "TwoFactorEnabled", "UrlSocialnetwork", "UserName" },
                 values: new object[,]
                 {
-                    { "7619771e-64c8-407c-831f-3ccba0b61132", 0, "652281a4-cc5f-4ec1-8110-e739baed0728", "\\img\\user\\no_cover.jpg", "client@sweetcreativity.com", true, "Олена Ткачук", 0, false, null, 0, "CLIENT@SWEETCREATIVITY.COM", "CLIENT@SWEETCREATIVITY.COM", "AQAAAAIAAYagAAAAEFa9cAVUaU1n7/lcziEJRqbJZuAk/ofrsRioqPqm/z++UFl7LlFbwikYC7HDYI+ROA==", 986390482, false, 0m, "c45cb1ee-07df-4d77-95e9-08ae09cb92de", 0, 0, false, "@olena_tkachuk", "client@sweetcreativity.com" },
-                    { "caf38268-883e-4d4d-837e-787861d75047", 0, "34ca4a1a-8bc0-4ebc-8b09-1678d1fa03d1", "\\img\\user\\no_cover.jpg", "admin@sweetcreativity.com", true, "Тетяна Бондар", 0, false, null, 0, "ADMIN@SWEETCREATIVITY.COM", "ADMIN@SWEETCREATIVITY.COM", "AQAAAAIAAYagAAAAEGoZHAsgcrQQskJIrrBORfyflcuBRTz/B3uNqRkV65HKyPKtRigvtX73pa2/NvOR5w==", 985674335, false, 0m, "4c990e7b-60f5-4676-b368-7cf409b7fe27", 0, 0, false, "@taniabondar23", "admin@sweetcreativity.com" },
-                    { "d65ff194-ca30-4b02-93dc-03fdb232bbf7", 0, "c678d696-9b11-4761-b492-c73352869880", "\\img\\user\\no_cover.jpg", "seller@sweetcreativity.com", true, "Адріан Мельник", 0, false, null, 0, "SELLER@SWEETCREATIVITY.COM", "SELLER@SWEETCREATIVITY.COM", "AQAAAAIAAYagAAAAELFK1J1cY5vj3TiyqMbjnu/qegYaOIrLHdcdcsd8fWtrP56sWGeUyymUQUDxoEaDKg==", 984568310, false, 0m, "4473b00a-e14d-408a-9f8f-2824505a5f4a", 0, 0, false, "@adriannmelnykk", "seller@sweetcreativity.com" }
+                    { "b7748b6f-0f2d-41d3-9229-8219580a6bff", 0, "1572d8b0-3818-4f4a-9f5a-f0b1e463bd8e", "\\img\\user\\no_cover.jpg", "client@sweetcreativity.com", true, "Олена Ткачук", 0, false, null, 0, "CLIENT@SWEETCREATIVITY.COM", "CLIENT@SWEETCREATIVITY.COM", "AQAAAAIAAYagAAAAEMFIbRxIU6gPEKXjs0UfTOntDwlZDpDvbLiu2jbY6dkvwPO06lVzIs+GwYjPLRyfew==", 986390482, false, 0m, "e6c85348-9582-4636-bae1-be27d0b44bd4", 0, 0, false, "@olena_tkachuk", "client@sweetcreativity.com" },
+                    { "bbee92fd-6ebf-492d-a15f-dcb2ccbe925b", 0, "44526d27-72ca-46ff-84b6-63d53e987180", "\\img\\user\\no_cover.jpg", "seller@sweetcreativity.com", true, "Адріан Мельник", 0, false, null, 0, "SELLER@SWEETCREATIVITY.COM", "SELLER@SWEETCREATIVITY.COM", "AQAAAAIAAYagAAAAEENznebvv6o0PxyrRlSRSmHQJLcxX887XgUFEXqElqCrf7aWoFNl2E4K8lMgOWg9dw==", 984568310, false, 0m, "b09aa7c2-96d4-4475-a9f2-f56102db3faf", 0, 0, false, "@adriannmelnykk", "seller@sweetcreativity.com" },
+                    { "fafe8b52-1c3b-429a-bde4-5cb01a551ed7", 0, "d5b6e388-bfd0-428b-9be2-74c74f24db3c", "\\img\\user\\no_cover.jpg", "admin@sweetcreativity.com", true, "Тетяна Бондар", 0, false, null, 0, "ADMIN@SWEETCREATIVITY.COM", "ADMIN@SWEETCREATIVITY.COM", "AQAAAAIAAYagAAAAEHOJuUwi/DbyB1F19nQ/x8AawEF1t1kNM2CnSadhuj7Aeau9ii3caTuZIUQpdzLo/w==", 985674335, false, 0m, "d3665eff-dd76-4c35-b59b-7cc89fb99590", 0, 0, false, "@taniabondar23", "admin@sweetcreativity.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -496,10 +497,10 @@ namespace SweetCreativity1.Core.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "1def7771-1847-4385-889a-0f217691bb72", "7619771e-64c8-407c-831f-3ccba0b61132" },
-                    { "660f7d8b-59f0-415c-baf8-0b789fe61558", "caf38268-883e-4d4d-837e-787861d75047" },
-                    { "c8a9456a-fb3d-4d9b-a4c5-9c4df40ccfbc", "caf38268-883e-4d4d-837e-787861d75047" },
-                    { "c8a9456a-fb3d-4d9b-a4c5-9c4df40ccfbc", "d65ff194-ca30-4b02-93dc-03fdb232bbf7" }
+                    { "f5098f88-3855-4821-8cd1-3ec42ca4ae4e", "b7748b6f-0f2d-41d3-9229-8219580a6bff" },
+                    { "5417ded7-73ee-48dc-9955-db558bee06c0", "bbee92fd-6ebf-492d-a15f-dcb2ccbe925b" },
+                    { "5417ded7-73ee-48dc-9955-db558bee06c0", "fafe8b52-1c3b-429a-bde4-5cb01a551ed7" },
+                    { "85e540b5-011b-4258-b1ac-297e7646f72f", "fafe8b52-1c3b-429a-bde4-5cb01a551ed7" }
                 });
 
             migrationBuilder.InsertData(
@@ -507,8 +508,8 @@ namespace SweetCreativity1.Core.Migrations
                 columns: new[] { "Id", "Date", "Text", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 2, 3, 23, 40, 27, 643, DateTimeKind.Local).AddTicks(3615), "Акція на всю продукцію від мене 10%", "d65ff194-ca30-4b02-93dc-03fdb232bbf7" },
-                    { 2, new DateTime(2024, 2, 3, 23, 40, 27, 643, DateTimeKind.Local).AddTicks(3619), "Акція на торти нашого виробництва 5%", "7619771e-64c8-407c-831f-3ccba0b61132" }
+                    { 1, new DateTime(2024, 2, 5, 21, 46, 30, 192, DateTimeKind.Local).AddTicks(5558), "Акція на всю продукцію від мене 10%", "bbee92fd-6ebf-492d-a15f-dcb2ccbe925b" },
+                    { 2, new DateTime(2024, 2, 5, 21, 46, 30, 192, DateTimeKind.Local).AddTicks(5574), "Акція на торти нашого виробництва 5%", "b7748b6f-0f2d-41d3-9229-8219580a6bff" }
                 });
 
             migrationBuilder.InsertData(
@@ -516,8 +517,8 @@ namespace SweetCreativity1.Core.Migrations
                 columns: new[] { "Id", "CategoryId", "CoverPath", "CreatedAtListing", "Description", "Location", "Price", "Product", "Title", "UserId", "Weight" },
                 values: new object[,]
                 {
-                    { 1, 1, "\\img\\listing\\no_cover.jpg", new DateTime(2024, 2, 3, 23, 40, 27, 643, DateTimeKind.Local).AddTicks(3396), " Це відомий і популярний торт, який складається з тонких шарів бісквіту і вершкового крему.", "Lviv", 164.99m, "Борошно, вершкове масло, яйця, оцет, цукор, ванільний цукор або ванільний екстракт, кукурудзяний крохмаль, вершки, сіль, прикраси (за бажанням).", "Торт Наполеон", "d65ff194-ca30-4b02-93dc-03fdb232bbf7", 1000 },
-                    { 2, 2, "\\img\\listing\\no_cover.jpg", new DateTime(2024, 2, 3, 23, 40, 27, 643, DateTimeKind.Local).AddTicks(3470), "Гармонійне поєднання повітряного шоколадного тіста мафіну з ніжно-солодкою вершковою начинкою.", "Rivne", 179.99m, "Борошно пшеничне, цукор-пісок, суміш “Мафін шоколадний”, олія рослинна, меланж, вода. Начинка: згущене молоко “Іриска”з вершками.", "Мафіни", "7619771e-64c8-407c-831f-3ccba0b61132", 80 }
+                    { 1, 1, "\\img\\listing\\no_cover.jpg", new DateTime(2024, 2, 5, 21, 46, 30, 192, DateTimeKind.Local).AddTicks(4993), " Це відомий і популярний торт, який складається з тонких шарів бісквіту і вершкового крему.", "Lviv", 164.99m, "Борошно, вершкове масло, яйця, оцет, цукор, ванільний цукор або ванільний екстракт, кукурудзяний крохмаль, вершки, сіль, прикраси (за бажанням).", "Торт Наполеон", "bbee92fd-6ebf-492d-a15f-dcb2ccbe925b", 1000 },
+                    { 2, 2, "\\img\\listing\\no_cover.jpg", new DateTime(2024, 2, 5, 21, 46, 30, 192, DateTimeKind.Local).AddTicks(5114), "Гармонійне поєднання повітряного шоколадного тіста мафіну з ніжно-солодкою вершковою начинкою.", "Rivne", 179.99m, "Борошно пшеничне, цукор-пісок, суміш “Мафін шоколадний”, олія рослинна, меланж, вода. Начинка: згущене молоко “Іриска”з вершками.", "Мафіни", "b7748b6f-0f2d-41d3-9229-8219580a6bff", 80 }
                 });
 
             migrationBuilder.InsertData(
@@ -525,8 +526,8 @@ namespace SweetCreativity1.Core.Migrations
                 columns: new[] { "Id", "CreatedAtOrder", "CustomerNumber", "Discount", "ListingId", "ListingPhotoPath", "NameOrder", "PriceOne", "Quantity", "StatusId", "TotalPrice", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 2, 3, 23, 40, 27, 643, DateTimeKind.Local).AddTicks(3553), 985684335, null, 1, null, "Торт Наполеон", 0m, 1, null, 249.99m, "7619771e-64c8-407c-831f-3ccba0b61132" },
-                    { 2, new DateTime(2024, 2, 3, 23, 40, 27, 643, DateTimeKind.Local).AddTicks(3545), 985688735, null, 2, null, "Торт Спартак", 0m, 1, null, 399.99m, "caf38268-883e-4d4d-837e-787861d75047" }
+                    { 1, new DateTime(2024, 2, 5, 21, 46, 30, 192, DateTimeKind.Local).AddTicks(5460), 985684335, null, 1, null, "Торт Наполеон", 0m, 1, null, 249.99m, "b7748b6f-0f2d-41d3-9229-8219580a6bff" },
+                    { 2, new DateTime(2024, 2, 5, 21, 46, 30, 192, DateTimeKind.Local).AddTicks(5452), 985688735, null, 2, null, "Торт Спартак", 0m, 1, null, 399.99m, "fafe8b52-1c3b-429a-bde4-5cb01a551ed7" }
                 });
 
             migrationBuilder.CreateIndex(

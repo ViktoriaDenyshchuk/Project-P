@@ -51,19 +51,19 @@ namespace SweetCreativity1.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1def7771-1847-4385-889a-0f217691bb72",
+                            Id = "f5098f88-3855-4821-8cd1-3ec42ca4ae4e",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "660f7d8b-59f0-415c-baf8-0b789fe61558",
+                            Id = "85e540b5-011b-4258-b1ac-297e7646f72f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "c8a9456a-fb3d-4d9b-a4c5-9c4df40ccfbc",
+                            Id = "5417ded7-73ee-48dc-9955-db558bee06c0",
                             Name = "Seller",
                             NormalizedName = "SELLER"
                         });
@@ -158,23 +158,23 @@ namespace SweetCreativity1.Core.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "caf38268-883e-4d4d-837e-787861d75047",
-                            RoleId = "660f7d8b-59f0-415c-baf8-0b789fe61558"
+                            UserId = "fafe8b52-1c3b-429a-bde4-5cb01a551ed7",
+                            RoleId = "85e540b5-011b-4258-b1ac-297e7646f72f"
                         },
                         new
                         {
-                            UserId = "caf38268-883e-4d4d-837e-787861d75047",
-                            RoleId = "c8a9456a-fb3d-4d9b-a4c5-9c4df40ccfbc"
+                            UserId = "fafe8b52-1c3b-429a-bde4-5cb01a551ed7",
+                            RoleId = "5417ded7-73ee-48dc-9955-db558bee06c0"
                         },
                         new
                         {
-                            UserId = "d65ff194-ca30-4b02-93dc-03fdb232bbf7",
-                            RoleId = "c8a9456a-fb3d-4d9b-a4c5-9c4df40ccfbc"
+                            UserId = "bbee92fd-6ebf-492d-a15f-dcb2ccbe925b",
+                            RoleId = "5417ded7-73ee-48dc-9955-db558bee06c0"
                         },
                         new
                         {
-                            UserId = "7619771e-64c8-407c-831f-3ccba0b61132",
-                            RoleId = "1def7771-1847-4385-889a-0f217691bb72"
+                            UserId = "b7748b6f-0f2d-41d3-9229-8219580a6bff",
+                            RoleId = "f5098f88-3855-4821-8cd1-3ec42ca4ae4e"
                         });
                 });
 
@@ -257,6 +257,9 @@ namespace SweetCreativity1.Core.Migrations
 
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("SenderName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TextMessage")
                         .IsRequired()
@@ -388,16 +391,16 @@ namespace SweetCreativity1.Core.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2024, 2, 3, 23, 40, 27, 643, DateTimeKind.Local).AddTicks(3615),
+                            Date = new DateTime(2024, 2, 5, 21, 46, 30, 192, DateTimeKind.Local).AddTicks(5558),
                             Text = "Акція на всю продукцію від мене 10%",
-                            UserId = "d65ff194-ca30-4b02-93dc-03fdb232bbf7"
+                            UserId = "bbee92fd-6ebf-492d-a15f-dcb2ccbe925b"
                         },
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2024, 2, 3, 23, 40, 27, 643, DateTimeKind.Local).AddTicks(3619),
+                            Date = new DateTime(2024, 2, 5, 21, 46, 30, 192, DateTimeKind.Local).AddTicks(5574),
                             Text = "Акція на торти нашого виробництва 5%",
-                            UserId = "7619771e-64c8-407c-831f-3ccba0b61132"
+                            UserId = "b7748b6f-0f2d-41d3-9229-8219580a6bff"
                         });
                 });
 
@@ -480,13 +483,13 @@ namespace SweetCreativity1.Core.Migrations
                             Id = 1,
                             CategoryId = 1,
                             CoverPath = "\\img\\listing\\no_cover.jpg",
-                            CreatedAtListing = new DateTime(2024, 2, 3, 23, 40, 27, 643, DateTimeKind.Local).AddTicks(3396),
+                            CreatedAtListing = new DateTime(2024, 2, 5, 21, 46, 30, 192, DateTimeKind.Local).AddTicks(4993),
                             Description = " Це відомий і популярний торт, який складається з тонких шарів бісквіту і вершкового крему.",
                             Location = "Lviv",
                             Price = 164.99m,
                             Product = "Борошно, вершкове масло, яйця, оцет, цукор, ванільний цукор або ванільний екстракт, кукурудзяний крохмаль, вершки, сіль, прикраси (за бажанням).",
                             Title = "Торт Наполеон",
-                            UserId = "d65ff194-ca30-4b02-93dc-03fdb232bbf7",
+                            UserId = "bbee92fd-6ebf-492d-a15f-dcb2ccbe925b",
                             Weight = 1000
                         },
                         new
@@ -494,13 +497,13 @@ namespace SweetCreativity1.Core.Migrations
                             Id = 2,
                             CategoryId = 2,
                             CoverPath = "\\img\\listing\\no_cover.jpg",
-                            CreatedAtListing = new DateTime(2024, 2, 3, 23, 40, 27, 643, DateTimeKind.Local).AddTicks(3470),
+                            CreatedAtListing = new DateTime(2024, 2, 5, 21, 46, 30, 192, DateTimeKind.Local).AddTicks(5114),
                             Description = "Гармонійне поєднання повітряного шоколадного тіста мафіну з ніжно-солодкою вершковою начинкою.",
                             Location = "Rivne",
                             Price = 179.99m,
                             Product = "Борошно пшеничне, цукор-пісок, суміш “Мафін шоколадний”, олія рослинна, меланж, вода. Начинка: згущене молоко “Іриска”з вершками.",
                             Title = "Мафіни",
-                            UserId = "7619771e-64c8-407c-831f-3ccba0b61132",
+                            UserId = "b7748b6f-0f2d-41d3-9229-8219580a6bff",
                             Weight = 80
                         });
                 });
@@ -561,26 +564,26 @@ namespace SweetCreativity1.Core.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAtOrder = new DateTime(2024, 2, 3, 23, 40, 27, 643, DateTimeKind.Local).AddTicks(3545),
+                            CreatedAtOrder = new DateTime(2024, 2, 5, 21, 46, 30, 192, DateTimeKind.Local).AddTicks(5452),
                             CustomerNumber = 985688735,
                             ListingId = 2,
                             NameOrder = "Торт Спартак",
                             PriceOne = 0m,
                             Quantity = 1,
                             TotalPrice = 399.99m,
-                            UserId = "caf38268-883e-4d4d-837e-787861d75047"
+                            UserId = "fafe8b52-1c3b-429a-bde4-5cb01a551ed7"
                         },
                         new
                         {
                             Id = 1,
-                            CreatedAtOrder = new DateTime(2024, 2, 3, 23, 40, 27, 643, DateTimeKind.Local).AddTicks(3553),
+                            CreatedAtOrder = new DateTime(2024, 2, 5, 21, 46, 30, 192, DateTimeKind.Local).AddTicks(5460),
                             CustomerNumber = 985684335,
                             ListingId = 1,
                             NameOrder = "Торт Наполеон",
                             PriceOne = 0m,
                             Quantity = 1,
                             TotalPrice = 249.99m,
-                            UserId = "7619771e-64c8-407c-831f-3ccba0b61132"
+                            UserId = "b7748b6f-0f2d-41d3-9229-8219580a6bff"
                         });
                 });
 
@@ -767,9 +770,9 @@ namespace SweetCreativity1.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7619771e-64c8-407c-831f-3ccba0b61132",
+                            Id = "b7748b6f-0f2d-41d3-9229-8219580a6bff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "652281a4-cc5f-4ec1-8110-e739baed0728",
+                            ConcurrencyStamp = "1572d8b0-3818-4f4a-9f5a-f0b1e463bd8e",
                             CoverPath = "\\img\\user\\no_cover.jpg",
                             Email = "client@sweetcreativity.com",
                             EmailConfirmed = true,
@@ -779,11 +782,11 @@ namespace SweetCreativity1.Core.Migrations
                             MostSoldProductId = 0,
                             NormalizedEmail = "CLIENT@SWEETCREATIVITY.COM",
                             NormalizedUserName = "CLIENT@SWEETCREATIVITY.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFa9cAVUaU1n7/lcziEJRqbJZuAk/ofrsRioqPqm/z++UFl7LlFbwikYC7HDYI+ROA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMFIbRxIU6gPEKXjs0UfTOntDwlZDpDvbLiu2jbY6dkvwPO06lVzIs+GwYjPLRyfew==",
                             PhoneNumber = 986390482,
                             PhoneNumberConfirmed = false,
                             SalePrice = 0m,
-                            SecurityStamp = "c45cb1ee-07df-4d77-95e9-08ae09cb92de",
+                            SecurityStamp = "e6c85348-9582-4636-bae1-be27d0b44bd4",
                             TotalListings = 0,
                             TotalSales = 0,
                             TwoFactorEnabled = false,
@@ -792,9 +795,9 @@ namespace SweetCreativity1.Core.Migrations
                         },
                         new
                         {
-                            Id = "caf38268-883e-4d4d-837e-787861d75047",
+                            Id = "fafe8b52-1c3b-429a-bde4-5cb01a551ed7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "34ca4a1a-8bc0-4ebc-8b09-1678d1fa03d1",
+                            ConcurrencyStamp = "d5b6e388-bfd0-428b-9be2-74c74f24db3c",
                             CoverPath = "\\img\\user\\no_cover.jpg",
                             Email = "admin@sweetcreativity.com",
                             EmailConfirmed = true,
@@ -804,11 +807,11 @@ namespace SweetCreativity1.Core.Migrations
                             MostSoldProductId = 0,
                             NormalizedEmail = "ADMIN@SWEETCREATIVITY.COM",
                             NormalizedUserName = "ADMIN@SWEETCREATIVITY.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGoZHAsgcrQQskJIrrBORfyflcuBRTz/B3uNqRkV65HKyPKtRigvtX73pa2/NvOR5w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHOJuUwi/DbyB1F19nQ/x8AawEF1t1kNM2CnSadhuj7Aeau9ii3caTuZIUQpdzLo/w==",
                             PhoneNumber = 985674335,
                             PhoneNumberConfirmed = false,
                             SalePrice = 0m,
-                            SecurityStamp = "4c990e7b-60f5-4676-b368-7cf409b7fe27",
+                            SecurityStamp = "d3665eff-dd76-4c35-b59b-7cc89fb99590",
                             TotalListings = 0,
                             TotalSales = 0,
                             TwoFactorEnabled = false,
@@ -817,9 +820,9 @@ namespace SweetCreativity1.Core.Migrations
                         },
                         new
                         {
-                            Id = "d65ff194-ca30-4b02-93dc-03fdb232bbf7",
+                            Id = "bbee92fd-6ebf-492d-a15f-dcb2ccbe925b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c678d696-9b11-4761-b492-c73352869880",
+                            ConcurrencyStamp = "44526d27-72ca-46ff-84b6-63d53e987180",
                             CoverPath = "\\img\\user\\no_cover.jpg",
                             Email = "seller@sweetcreativity.com",
                             EmailConfirmed = true,
@@ -829,11 +832,11 @@ namespace SweetCreativity1.Core.Migrations
                             MostSoldProductId = 0,
                             NormalizedEmail = "SELLER@SWEETCREATIVITY.COM",
                             NormalizedUserName = "SELLER@SWEETCREATIVITY.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAELFK1J1cY5vj3TiyqMbjnu/qegYaOIrLHdcdcsd8fWtrP56sWGeUyymUQUDxoEaDKg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEENznebvv6o0PxyrRlSRSmHQJLcxX887XgUFEXqElqCrf7aWoFNl2E4K8lMgOWg9dw==",
                             PhoneNumber = 984568310,
                             PhoneNumberConfirmed = false,
                             SalePrice = 0m,
-                            SecurityStamp = "4473b00a-e14d-408a-9f8f-2824505a5f4a",
+                            SecurityStamp = "b09aa7c2-96d4-4475-a9f2-f56102db3faf",
                             TotalListings = 0,
                             TotalSales = 0,
                             TwoFactorEnabled = false,

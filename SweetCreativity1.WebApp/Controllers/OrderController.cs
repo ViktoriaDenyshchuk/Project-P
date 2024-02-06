@@ -10,6 +10,8 @@ using SweetCreativity1.Reposotories.Repos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNet.Identity;
 using System.Reflection;
+using Microsoft.AspNetCore.SignalR;
+
 
 namespace SweetCreativity.WebApp.Controllers
 {
@@ -19,12 +21,14 @@ namespace SweetCreativity.WebApp.Controllers
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly SweetCreativity1Context _context;
         private readonly Microsoft.AspNetCore.Identity.UserManager<User> _userManager;
-        public OrderController(IOrderReposotory orderReposotory, IWebHostEnvironment webHostEnviroment, [FromServices] SweetCreativity1Context context, Microsoft.AspNetCore.Identity.UserManager<User> userManager)
+        private readonly IHubContext<ChatHub> _hubContext;
+        public OrderController(IOrderReposotory orderReposotory, IWebHostEnvironment webHostEnviroment, [FromServices] SweetCreativity1Context context, Microsoft.AspNetCore.Identity.UserManager<User> userManager, IHubContext<ChatHub> hubContext)
         {
             this.orderReposotory = orderReposotory;
             this.webHostEnvironment = webHostEnviroment;
             this._context = context;
             this._userManager = userManager;
+            _hubContext = hubContext;
         }
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
@@ -129,6 +133,7 @@ namespace SweetCreativity.WebApp.Controllers
             var order = _context.Orders
                 .Include(o => o.ChatMessage)
                 .Include(o => o.Listing)
+                .Include(o => o.User)
                 .FirstOrDefault(o => o.Id == id);
 
             if (order == null)
@@ -147,6 +152,7 @@ namespace SweetCreativity.WebApp.Controllers
 
             // Передати список статусів у ViewBag
             ViewBag.StatusList = new SelectList(statusList, "Id", "StatusName");
+            ViewBag.OwnerName = order.User?.FullName;
 
             return View(orderReposotory.Get(id));
         }
@@ -385,7 +391,32 @@ namespace SweetCreativity.WebApp.Controllers
 
             return RedirectToAction("IndexSeller");
         }
+        //Варіант 1
+        //[HttpPost]
+        //public async Task<IActionResult> AddMessage(int orderId, string textMessage, string userId)
+        //{
+        //    var order = await _context.Orders
+        //        .Include(o => o.ChatMessage)
+        //        .FirstOrDefaultAsync(o => o.Id == orderId);
 
+        //    if (order == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var newMessage = new ChatMessage
+        //    {
+        //        TextMessage = textMessage,
+        //        CreatedAtMessage = DateTime.Now,
+        //        UserId = userId // Додайте ідентифікатор користувача до відгуку
+        //    };
+
+        //    order.ChatMessage.Add(newMessage);
+        //    await _context.SaveChangesAsync();
+
+        //    // Після додавання відгуку перенаправте користувача на сторінку оголошення
+        //    return RedirectToAction("Details", new { id = orderId });
+        //}
         [HttpPost]
         public async Task<IActionResult> AddMessage(int orderId, string textMessage, string userId)
         {
@@ -398,19 +429,35 @@ namespace SweetCreativity.WebApp.Controllers
                 return NotFound();
             }
 
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
             var newMessage = new ChatMessage
             {
                 TextMessage = textMessage,
                 CreatedAtMessage = DateTime.Now,
-                UserId = userId // Додайте ідентифікатор користувача до відгуку
+                UserId = userId,
+                SenderName = user.FullName  // Set the SenderName property to the user's full name
             };
 
             order.ChatMessage.Add(newMessage);
             await _context.SaveChangesAsync();
 
-            // Після додавання відгуку перенаправте користувача на сторінку оголошення
-            return RedirectToAction("Details", new { id = orderId });
+            // Notify all clients through SignalR with the sender's name and message
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", user.FullName, textMessage);
+
+            // Pass the sender's name to the view
+            ViewBag.UserFullName = user.FullName;
+
+            return RedirectToAction("Details", new { id = orderId, userFullName = user.FullName });
         }
+
+
+
     }
 
 
